@@ -1,7 +1,10 @@
 package android.exercise.mini.interactions;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -11,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class EditTitleActivity extends AppCompatActivity {
+  private boolean isEditing;
 
   // TODO:
   //  you can add fields to this class. those fields will be accessibly inside any method
@@ -35,9 +39,9 @@ public class EditTitleActivity extends AppCompatActivity {
     // setup - start from static title with "edit" button
     fabStartEdit.setVisibility(View.VISIBLE);
     fabEditDone.setVisibility(View.GONE);
-    textViewTitle.setText("Page title here");
+    textViewTitle.setText("Name");
     textViewTitle.setVisibility(View.VISIBLE);
-    editTextTitle.setText("Page title here");
+    editTextTitle.setText("Edit your name");
     editTextTitle.setVisibility(View.GONE);
 
     // handle clicks on "start edit"
@@ -54,6 +58,19 @@ public class EditTitleActivity extends AppCompatActivity {
 
       to complete (1.) & (2.), start by just changing visibility. only add animations after everything else is ready
        */
+      this.isEditing = true;
+
+      View viewEdit = findViewById(R.id.fab_start_edit);
+      viewEdit.setVisibility(View.INVISIBLE);
+      View viewDone = findViewById(R.id.fab_edit_done);
+      viewDone.setVisibility(View.VISIBLE);
+      View viewTitle1 = findViewById(R.id.textViewPageTitle);
+      viewTitle1.setVisibility(View.INVISIBLE);
+      View viewTitle2 = findViewById(R.id.editTextPageTitle);
+      viewTitle2.setVisibility(View.VISIBLE);
+
+
+
     });
 
     // handle clicks on "done edit"
@@ -69,6 +86,29 @@ public class EditTitleActivity extends AppCompatActivity {
 
       to complete (1.) & (2.), start by just changing visibility. only add animations after everything else is ready
        */
+      this.isEditing = false;
+      View viewDone = findViewById(R.id.fab_edit_done);
+      viewDone.setVisibility(View.INVISIBLE);
+      View viewEdit = findViewById(R.id.fab_start_edit);
+      viewEdit.setVisibility(View.INVISIBLE);
+      if(!this.isEditing){
+        textViewTitle.setText(editTextTitle.getText());
+      }
+
+
+      View viewTitleEdit = findViewById(R.id.editTextPageTitle);
+      viewTitleEdit.setVisibility(View.INVISIBLE);
+      View viewTitleName = findViewById(R.id.textViewPageTitle);
+      viewTitleName.setVisibility(View.VISIBLE);
+
+      try {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(textViewTitle.getWindowToken(), 0);
+      }
+      catch(Exception e){
+
+      }
+
     });
   }
 
@@ -90,5 +130,20 @@ public class EditTitleActivity extends AppCompatActivity {
     to work with views, you will need to find them first.
     to find views call `findViewById()` in a same way like in `onCreate()`
      */
+    if(this.isEditing) {
+      View viewTitleEdit = findViewById(R.id.editTextPageTitle);
+      viewTitleEdit.setVisibility(View.INVISIBLE);
+      View viewTitleName = findViewById(R.id.textViewPageTitle);
+      viewTitleName.setVisibility(View.VISIBLE);
+
+      View viewDone = findViewById(R.id.fab_edit_done);
+      viewDone.setVisibility(View.INVISIBLE);
+      View viewEdit = findViewById(R.id.fab_start_edit);
+      viewEdit.setVisibility(View.VISIBLE);
+    }
+    else{
+      super.onBackPressed();
+    }
+
   }
 }
