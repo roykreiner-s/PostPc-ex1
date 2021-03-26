@@ -1,5 +1,6 @@
 package android.exercise.mini.interactions;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +45,11 @@ public class EditTitleActivity extends AppCompatActivity {
     editTextTitle.setText("Edit your name");
     editTextTitle.setVisibility(View.GONE);
 
+    ObjectAnimator.ofFloat(fabStartEdit, "rotation", 0f, 360f).
+            setDuration(5000).start();
+
+
+
     // handle clicks on "start edit"
     fabStartEdit.setOnClickListener(v -> {
       /*
@@ -58,6 +64,10 @@ public class EditTitleActivity extends AppCompatActivity {
 
       to complete (1.) & (2.), start by just changing visibility. only add animations after everything else is ready
        */
+      // animate
+      fabStartEdit.animate().translationX(200).start();
+
+
       this.isEditing = true;
 
       View viewEdit = findViewById(R.id.fab_start_edit);
